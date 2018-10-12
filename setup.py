@@ -3,8 +3,6 @@ import os
 
 import setuptools
 
-# import pdb; pdb.set_trace()
-
 here = os.path.abspath(os.path.dirname(__file__))
 
 with codecs.open('README.rst', 'r', 'utf-8') as f:

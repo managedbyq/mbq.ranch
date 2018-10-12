@@ -6,7 +6,7 @@ from mbq import metrics
 
 
 class RanchConfig(AppConfig):
-    name = 'ranch'
+    name = 'mbq.ranch'
     verbose_name = 'Ranch'
 
     def ready(self):

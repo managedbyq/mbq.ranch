@@ -1,3 +1,2 @@
 arrow
-jsonfield
 mbq.metrics

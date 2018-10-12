@@ -3,11 +3,13 @@ import os
 
 import setuptools
 
+# import pdb; pdb.set_trace()
 
 here = os.path.abspath(os.path.dirname(__file__))
 
 with codecs.open('README.rst', 'r', 'utf-8') as f:
     readme = f.read()
+
 
 about = {}
 with codecs.open(os.path.join(here, 'mbq', 'ranch', '__version__.py'), 'r', 'utf-8') as f:
@@ -39,7 +41,6 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'arrow',
-        'jsonfield',
         'mbq.metrics',
     ],
     zip_safe=True,

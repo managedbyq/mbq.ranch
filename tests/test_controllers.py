@@ -5,10 +5,10 @@ from django.test import TestCase
 
 from mock import Mock, patch
 
-from ..constants import TaskStatus
-from ..controllers import persist_task, rerun_logged_task
-from ..exceptions import TaskNotFound
-from ..models import LoggedTask
+from mbq.ranch.constants import TaskStatus
+from mbq.ranch.controllers import persist_task, rerun_logged_task
+from mbq.ranch.exceptions import TaskNotFound
+from mbq.ranch.models import LoggedTask
 
 
 class TaskManagementTests(TestCase):
@@ -53,7 +53,7 @@ class TaskManagementTests(TestCase):
             {'foo': 1, 'bar': 2},
         )
 
-    @patch('ranch.controllers.import_module')
+    @patch('mbq.ranch.controllers.import_module')
     def test_rerun_task_with_params(self, module_import_mock):
         module_mock = Mock()
         module_import_mock.return_value = module_mock
@@ -79,7 +79,7 @@ class TaskManagementTests(TestCase):
         )
         self.assertFalse(LoggedTask.objects.filter(pk=logged_task.pk).exists())
 
-    @patch('ranch.controllers.import_module')
+    @patch('mbq.ranch.controllers.import_module')
     def test_rerun_task_with_no_params(self, module_import_mock):
         module_mock = Mock()
         module_import_mock.return_value = module_mock
@@ -102,7 +102,7 @@ class TaskManagementTests(TestCase):
 
         self.assertFalse(LoggedTask.objects.filter(pk=logged_task.pk).exists())
 
-    @patch('ranch.controllers.import_module')
+    @patch('mbq.ranch.controllers.import_module')
     def test_rerun_task_not_found(self, module_import_mock):
         module_mock = Mock()
         module_import_mock.return_value = module_mock

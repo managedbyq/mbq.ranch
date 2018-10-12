@@ -1,6 +1,4 @@
-boto
-boto3
 celery<5.0
 dj-database-url
-freezegun
+mock
 rollbar

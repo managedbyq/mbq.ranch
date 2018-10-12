@@ -1,7 +1,12 @@
+import logging
+
 import requests
 from six.moves.urllib.parse import urlparse
 
 from .. import _collector
+
+
+logger = logging.getLogger(__name__)
 
 
 def send_rabbitmq_queue_stats(broker_url, queue_names):
@@ -12,7 +17,19 @@ def send_rabbitmq_queue_stats(broker_url, queue_names):
     username = parsed.username or 'guest'
     password = parsed.password or 'guest'
 
-    response = requests.get(url, auth=(username, password), timeout=0.1)
+    try:
+        response = requests.get(url, auth=(username, password), timeout=0.1)
+    except requests.exceptions.Timeout:
+        # We set a very aggressive timeout on the request so that we do not
+        # block our worker for very long. It's expected that this will
+        # sometimes fail, but it's unlikely to matter since we should be
+        # collecting queue stats frequently. As such, we log but otherwise
+        # swallow the exception (so we do not Rollbar or emit generic error
+        # metrics)
+        logger.info('Timeout requesting metrics from RabbitMQ, skipping')
+        _collector.increment('rabbitmq.stats.timeout', value=1)
+        return
+
     response.raise_for_status()
 
     payload = response.json()

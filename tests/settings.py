@@ -2,7 +2,6 @@ import os
 
 import mbq.metrics
 
-import boto3
 import dj_database_url
 
 
@@ -23,9 +22,5 @@ INSTALLED_APPS = [
 ]
 
 USE_TZ = True
-
-boto3.setup_default_session(
-    region_name='us-east-1',
-)
 
 mbq.metrics.init()

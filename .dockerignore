@@ -1,0 +1,13 @@
+.DS_Store
+.python-version
+.tox
+
+*.egg-info
+*.py[co]
+
+__pycache__
+
+build
+dist
+
+pip-log.txt

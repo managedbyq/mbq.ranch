@@ -1,0 +1,4 @@
+celery<5.0
+dj-database-url
+mock
+rollbar

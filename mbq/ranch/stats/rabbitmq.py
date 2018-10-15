@@ -13,7 +13,7 @@ def send_rabbitmq_queue_stats(broker_url, queue_names):
     queue_names = set(queue_names)
     parsed = urlparse(broker_url)
 
-    url = 'http://{}:15672/api/queues'.format(parsed.hostname)
+    url = 'https://{}/api/queues'.format(parsed.hostname)
     username = parsed.username or 'guest'
     password = parsed.password or 'guest'
 

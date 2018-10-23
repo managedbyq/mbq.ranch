@@ -19,7 +19,7 @@ class LoggedTaskAdmin(admin.ModelAdmin):
                                 'admin_kwargs', 'admin_stacktrace', 'status')
     ordering = ('-created_at',)
 
-    actions = ['retry_logged_tasks']
+    actions = ['delete_selected', 'retry_logged_tasks']
 
     def retry_logged_tasks(logged_task_admin, request, queryset):
         opts = logged_task_admin.model._meta

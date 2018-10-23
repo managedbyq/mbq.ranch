@@ -39,7 +39,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'arrow',
-        'mbq.metrics',
+        'mbq.metrics>=0.4.5',
     ],
     zip_safe=True,
 )

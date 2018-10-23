@@ -1,2 +1,2 @@
 arrow
-mbq.metrics
+mbq.metrics>=0.4.5

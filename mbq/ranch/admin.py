@@ -5,13 +5,11 @@ from django.contrib.admin import helpers
 from django.template.response import TemplateResponse
 from django.utils.html import format_html
 
-from common.admin import AuditMixin
-
 from .controllers import rerun_logged_task
 from .models import LoggedTask
 
 
-class LoggedTaskAdmin(AuditMixin, admin.ModelAdmin):
+class LoggedTaskAdmin(admin.ModelAdmin):
 
     list_display = ('id', 'queue', 'task_name', 'created_at', 'args', 'kwargs',
                     'status')

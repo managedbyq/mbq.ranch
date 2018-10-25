@@ -6,7 +6,7 @@ import setuptools
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-with codecs.open('README.rst', 'r', 'utf-8') as f:
+with codecs.open('README.md', 'r', 'utf-8') as f:
     readme = f.read()
 
 about = {}

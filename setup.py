@@ -17,7 +17,7 @@ setuptools.setup(
     name=about['__title__'],
     description=about['__description__'],
     long_description=readme,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/markdown',
     version=about['__version__'],
     license=about['__license__'],
     url=about['__url__'],

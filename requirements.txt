@@ -1,2 +1,2 @@
-arrow
+arrow==0.12.1
 mbq.metrics>=0.4.5

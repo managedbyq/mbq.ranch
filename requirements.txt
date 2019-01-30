@@ -1,2 +1,0 @@
-arrow
-mbq.metrics>=0.4.5

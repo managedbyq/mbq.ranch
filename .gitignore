@@ -11,3 +11,7 @@ build
 dist
 
 pip-log.txt
+
+# VSCode
+.mypy_cache
+.vscode

@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = ["ranch.lcl.mbq.io"]
 DEBUG = True
 DEBUG_PROPAGATE_EXCEPTIONS = True
-DATABASE_URL = "postgres://postgres:postgres@pubsub-postgres:5432/ranch"
+DATABASE_URL = "postgres://postgres:postgres@ranch-postgres:5432/ranch"
 DATABASES = {
     "default": dj_database_url.parse(
         DATABASE_URL, engine="django.db.backends.postgresql", conn_max_age=0

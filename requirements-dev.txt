@@ -6,8 +6,8 @@ flake8-bugbear
 flake8-isort
 ipdb
 isort
-mbq.env>=0.2.0
-mbq.metrics>=0.4.5
+mbq.env>=1,<2
+mbq.metrics>=1,<2
 psycopg2-binary
 pytest
 pytest-django

@@ -8,7 +8,7 @@ from mbq.ranch.controllers import persist_task, rerun_logged_task
 from mbq.ranch.exceptions import TaskNotFound
 from mbq.ranch.models import LoggedTask
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 
 class TaskManagementTests(TestCase):

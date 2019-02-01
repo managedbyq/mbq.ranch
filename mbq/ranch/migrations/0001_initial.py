@@ -7,21 +7,25 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='LoggedTask',
+            name="LoggedTask",
             fields=[
-                ('id', models.CharField(max_length=255, primary_key=True, serialize=False, unique=True)),
-                ('task_name', models.CharField(max_length=2056)),
-                ('status', models.CharField(max_length=50)),
-                ('args', models.TextField(default='[]')),
-                ('kwargs', models.TextField(default='{}')),
-                ('stacktrace', models.TextField(blank=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.CharField(
+                        max_length=255, primary_key=True, serialize=False, unique=True
+                    ),
+                ),
+                ("task_name", models.CharField(max_length=2056)),
+                ("status", models.CharField(max_length=50)),
+                ("args", models.TextField(default="[]")),
+                ("kwargs", models.TextField(default="{}")),
+                ("stacktrace", models.TextField(blank=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
-        ),
+        )
     ]

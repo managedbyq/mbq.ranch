@@ -9,12 +9,13 @@ from ..lib.error_handling import log_errors_and_send_to_rollbar
 
 @task_failure.connect
 @log_errors_and_send_to_rollbar
-def handle_task_failure(sender, task_id, exception, args, kwargs, traceback, einfo,
-                        **extra_kwargs):
+def handle_task_failure(
+    sender, task_id, exception, args, kwargs, traceback, einfo, **extra_kwargs
+):
     try:
         persist_task(
             task_id,
-            sender.request.delivery_info.get('routing_key'),
+            sender.request.delivery_info.get("routing_key"),
             sender.name,
             args,
             kwargs,
@@ -34,9 +35,9 @@ def handle_task_failure(sender, task_id, exception, args, kwargs, traceback, ein
 @log_errors_and_send_to_rollbar
 def handle_task_unknown(sender, name, id, message, exc, **kwargs):
     try:
-        queue = message.delivery_info.get('routing_key', 'unknown')
+        queue = message.delivery_info.get("routing_key", "unknown")
     except Exception:
-        queue = 'unknown'
+        queue = "unknown"
 
     persist_task(
         id,

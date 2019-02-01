@@ -55,8 +55,8 @@ PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 USE_TZ = True
 MESSAGE_HANDLERS = "tests.message_handlers"
 RANCH = {
-    'env': env.Environment.LOCAL,  # e.g. production, development
-    'service': 'ranch',  # e.g. os-core
+    "env": env.Environment.LOCAL,  # e.g. production, development
+    "service": "ranch",  # e.g. os-core
 }
 LOGGING_LEVEL = "DEBUG"
 LOGGING = {
@@ -65,15 +65,24 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": (
-                "%(levelname)-8s %(asctime)s %(name)s " "%(filename)s:%(lineno)s %(message)s"
+                "%(levelname)-8s %(asctime)s %(name)s "
+                "%(filename)s:%(lineno)s %(message)s"
             )
         }
     },
     "handlers": {
-        "console": {"level": "INFO", "class": "logging.StreamHandler", "formatter": "verbose"}
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        }
     },
     "loggers": {
-        "django.db.backends": {"handlers": ["console"], "level": LOGGING_LEVEL, "propagate": False},
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": LOGGING_LEVEL,
+            "propagate": False,
+        },
         "botocore": {"handlers": ["console"], "level": "ERROR", "propagate": False},
         "boto3": {"handlers": ["console"], "level": "ERROR", "propagate": False},
         "": {"handlers": ["console"], "level": LOGGING_LEVEL},

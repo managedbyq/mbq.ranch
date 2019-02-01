@@ -27,88 +27,102 @@ from ..stats.rabbitmq import send_rabbitmq_queue_stats
 local = threading.local()
 
 HEARTBEAT_METRICS_INTERVAL_SECONDS = 30
-EXTRA_ERROR_QUEUE_TAGS_FN = settings.RANCH.get('extra_error_queue_tags_fn', lambda task: [])
+EXTRA_ERROR_QUEUE_TAGS_FN = settings.RANCH.get(
+    "extra_error_queue_tags_fn", lambda task: []
+)
 
 
 @before_task_publish.connect
 @log_errors_and_send_to_rollbar
-def add_metadata_to_task_headers(sender, body, exchange, routing_key, headers, properties,
-                                 declare, retry_policy, **kwargs):
-    queued_at = arrow.get(headers.get('eta')).timestamp
-    headers['__RANCH_QUEUED_AT'] = queued_at
+def add_metadata_to_task_headers(
+    sender,
+    body,
+    exchange,
+    routing_key,
+    headers,
+    properties,
+    declare,
+    retry_policy,
+    **kwargs
+):
+    queued_at = arrow.get(headers.get("eta")).timestamp
+    headers["__RANCH_QUEUED_AT"] = queued_at
 
 
 @after_task_publish.connect
 @log_errors_and_send_to_rollbar
 def send_metrics_on_publish(sender, headers, body, exchange, routing_key, **kwargs):
-    _collector.increment('task.publish', value=1, tags={
-        'task': headers.get('task', 'unknown'),
-    })
+    _collector.increment(
+        "task.publish", value=1, tags={"task": headers.get("task", "unknown")}
+    )
 
 
 @task_prerun.connect
 @log_errors_and_send_to_rollbar
-def store_metadata_before_task_runs(sender, task_id, task, args, kwargs, **extra_kwargs):
+def store_metadata_before_task_runs(
+    sender, task_id, task, args, kwargs, **extra_kwargs
+):
     local.task_received_at = time.time()
     try:
-        local.task_queue = task.request.delivery_info.get('routing_key')
+        local.task_queue = task.request.delivery_info.get("routing_key")
     except Exception:
         local.task_queue = None
 
-    queued_at = getattr(task.request, '__RANCH_QUEUED_AT', None)
+    queued_at = getattr(task.request, "__RANCH_QUEUED_AT", None)
     if queued_at:
         wait_time_ms = (time.time() - queued_at) * 1000
-        _collector.timing('task.wait_time', value=wait_time_ms, tags={
-            'task': task.name,
-            'queue': local.task_queue,
-        })
+        _collector.timing(
+            "task.wait_time",
+            value=wait_time_ms,
+            tags={"task": task.name, "queue": local.task_queue},
+        )
 
 
 @task_postrun.connect
 @log_errors_and_send_to_rollbar
-def send_metrics_after_task_runs(sender, task_id, task, args, kwargs, retval, state,
-                                 **extra_kwargs):
+def send_metrics_after_task_runs(
+    sender, task_id, task, args, kwargs, retval, state, **extra_kwargs
+):
     execution_time_ms = (time.time() - local.task_received_at) * 1000
-    _collector.timing('task.execution_time', value=execution_time_ms, tags={
-        'task': task.name,
-        'state': state,
-        'queue': local.task_queue,
-    })
+    _collector.timing(
+        "task.execution_time",
+        value=execution_time_ms,
+        tags={"task": task.name, "state": state, "queue": local.task_queue},
+    )
 
 
 def _send_task_processed_metric(task_name, result):
-    _collector.increment('task.processed', value=1, tags={
-        'task': task_name,
-        'result': result,
-        'queue': local.task_queue,
-    })
+    _collector.increment(
+        "task.processed",
+        value=1,
+        tags={"task": task_name, "result": result, "queue": local.task_queue},
+    )
 
 
 @task_retry.connect
 @log_errors_and_send_to_rollbar
 def send_metrics_on_task_retry(sender, request, reason, einfo, **kwargs):
-    _send_task_processed_metric(sender.name, 'retry')
+    _send_task_processed_metric(sender.name, "retry")
 
 
 @task_success.connect
 @log_errors_and_send_to_rollbar
 def send_metrics_on_task_success(sender, result, *args, **kwargs):
-    _send_task_processed_metric(sender.name, 'success')
+    _send_task_processed_metric(sender.name, "success")
 
 
 @task_failure.connect
 @log_errors_and_send_to_rollbar
-def send_metrics_on_task_failure(sender, task_id, exception, args, kwargs, traceback,
-                                 einfo, **extra_kwargs):
-    _send_task_processed_metric(sender.name, 'failure')
+def send_metrics_on_task_failure(
+    sender, task_id, exception, args, kwargs, traceback, einfo, **extra_kwargs
+):
+    _send_task_processed_metric(sender.name, "failure")
 
 
 @task_unknown.connect
 @log_errors_and_send_to_rollbar
 def send_metrics_on_task_unknown(sender, name, id, message, exc, **kwargs):
-    _collector.increment('task.unknown', value=1, tags={
-        'task': name,
-    })
+    _collector.increment("task.unknown", value=1, tags={"task": name})
 
 
 @celeryd_after_setup.connect
@@ -131,13 +145,14 @@ def store_metadata_on_worker_start(sender, instance, conf, **kwargs):
 
 
 def _send_queue_length_metrics():
-    if local.broker_type == 'amqp':
-        send_rabbitmq_queue_stats(local.app_config['broker_url'], list(local.worker_queues.keys()))
+    if local.broker_type == "amqp":
+        send_rabbitmq_queue_stats(
+            local.app_config["broker_url"], list(local.worker_queues.keys())
+        )
 
 
 def _error_queue_tags(task):
-    tags = ['queue:{}'.format(task.queue),
-            'task:{}'.format(task.task_name)]
+    tags = ["queue:{}".format(task.queue), "task:{}".format(task.task_name)]
     tags.extend(EXTRA_ERROR_QUEUE_TAGS_FN(task))
     return tuple(tags)
 
@@ -147,7 +162,7 @@ def _send_error_queue_metrics():
     counts = Counter(_error_queue_tags(task) for task in tasks)
 
     for tags, count in counts.items():
-        _collector.gauge('queue.errors.length', value=count, tags=tags)
+        _collector.gauge("queue.errors.length", value=count, tags=tags)
 
 
 @heartbeat_sent.connect

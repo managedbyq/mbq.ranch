@@ -6,24 +6,20 @@ from mbq import metrics
 
 
 class RanchConfig(AppConfig):
-    name = 'mbq.ranch'
-    verbose_name = 'Ranch'
+    name = "mbq.ranch"
+    verbose_name = "Ranch"
 
     def ready(self):
-        env = settings.RANCH.get('env')
-        service = settings.RANCH.get('service')
+        env = settings.RANCH.get("env")
+        service = settings.RANCH.get("service")
 
         if not all([env, service]):
             raise ImproperlyConfigured(
-                'mbq.ranch must be configured with env and service parameters.'
+                "mbq.ranch must be configured with env and service parameters."
             )
 
         self.module._collector = metrics.Collector(
-            namespace='mbq.ranch',
-            tags={
-                'env': env,
-                'service': service,
-            },
+            namespace="mbq.ranch", tags={"env": env, "service": service}
         )
 
         from . import signal_handlers  # noqa

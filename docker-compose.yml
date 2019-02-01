@@ -32,7 +32,7 @@ services:
     build:
       context: .
       args:
-        IMAGE: 'python:3.7-slim-stretch'
+        IMAGE: 'python:3.7.1-slim-stretch'
         INSTALL_DJANGO: 'TRUE'
     volumes:
       - .:/app

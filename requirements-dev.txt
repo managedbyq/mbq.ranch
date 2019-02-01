@@ -1,9 +1,9 @@
 arrow
 dj-database-url
 celery<5.0
-flake8
-flake8-bugbear
-flake8-isort
+flake8==3.7.3
+flake8-bugbear==18.8.0
+flake8-isort==2.3
 ipdb
 isort
 mbq.env>=1,<2

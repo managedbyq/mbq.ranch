@@ -2,7 +2,7 @@ arrow
 dj-database-url
 celery<5.0
 flake8==3.7.4
-flake8-isort==2.6.0
+flake8-isort
 ipdb
 isort==4.3.4
 mbq.env>=1,<2

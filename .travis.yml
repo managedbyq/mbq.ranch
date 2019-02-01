@@ -7,10 +7,6 @@ cache: pip
 services:
   - mysql
 
-python:
-  - '3.6'
-  - '3.7'
-
 matrix:
   fast_finish: true
   include:

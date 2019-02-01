@@ -7,15 +7,15 @@ cache: pip
 services:
   - mysql
 
-python:
-  - '3.6'
-  - '3.7'
+# python:
+#   - '3.6'
+#   - '3.7'
 
-env:
-  matrix:
-    - DJANGO=1.11
-    - DJANGO=2.0
-    - DJANGO=2.1
+# env:
+#   matrix:
+#     - DJANGO=1.11
+#     - DJANGO=2.0
+#     - DJANGO=2.1
 
 matrix:
   fast_finish: true

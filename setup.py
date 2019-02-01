@@ -40,7 +40,7 @@ setuptools.setup(
     install_requires=[
         'arrow',
         'celery<5.0',
-        'mbq.env>=0.2.0,<1',
+        'mbq.env>=1,<2',
         'mbq.metrics>=1,<2',
         'rollbar',
     ],

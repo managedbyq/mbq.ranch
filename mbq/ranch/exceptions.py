@@ -1,3 +1,2 @@
-
 class TaskNotFound(Exception):
     pass

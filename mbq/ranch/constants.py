@@ -1,12 +1,6 @@
-
-
 class TaskStatus:
-    FAILURE = 'FAILURE'
-    REJECTED = 'REJECTED'
-    UNKNOWN = 'UNKNOWN'
+    FAILURE = "FAILURE"
+    REJECTED = "REJECTED"
+    UNKNOWN = "UNKNOWN"
 
-    CHOICES = (
-        (FAILURE, 'Failure'),
-        (REJECTED, 'Rejected'),
-        (UNKNOWN, 'Unknown'),
-    )
+    CHOICES = ((FAILURE, "Failure"), (REJECTED, "Rejected"), (UNKNOWN, "Unknown"))

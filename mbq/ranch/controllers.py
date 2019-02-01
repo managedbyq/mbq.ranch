@@ -18,8 +18,8 @@ def persist_task(task_id, queue, task_name, args, kwargs, stacktrace, status):
 
 
 def rerun_logged_task(logged_task):
-    task_name = logged_task.task_name.split('.')[-1]
-    module_path = logged_task.task_name.replace('.{}'.format(task_name), '')
+    task_name = logged_task.task_name.split(".")[-1]
+    module_path = logged_task.task_name.replace(".{}".format(task_name), "")
 
     module = import_module(module_path)
     task_func = getattr(module, task_name, None)

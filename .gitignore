@@ -1,6 +1,7 @@
 .DS_Store
 .python-version
 .tox
+.mypy_cache
 
 *.egg-info
 *.py[co]
@@ -11,3 +12,6 @@ build
 dist
 
 pip-log.txt
+
+# VSCode
+.vscode

@@ -39,7 +39,10 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'arrow',
-        'mbq.metrics>=0.4.5',
+        'celery<5.0',
+        'mbq.env>=1,<2',
+        'mbq.metrics>=1,<2',
+        'rollbar',
     ],
     zip_safe=True,
 )

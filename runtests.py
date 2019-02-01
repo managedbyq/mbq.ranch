@@ -6,7 +6,7 @@ from django.test.runner import DiscoverRunner
 
 
 def run_tests():
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.tests.settings'
     django.setup()
     test_runner = DiscoverRunner(keepdb=True)
     failures = test_runner.run_tests(['tests'])

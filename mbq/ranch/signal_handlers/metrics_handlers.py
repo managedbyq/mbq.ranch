@@ -5,7 +5,6 @@ from collections import Counter
 from django.conf import settings
 
 import arrow
-
 from celery.signals import (
     after_task_publish,
     before_task_publish,

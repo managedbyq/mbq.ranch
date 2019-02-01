@@ -1,4 +1,5 @@
 import json
+from unittest.mock import Mock, patch
 
 from django.db.models import signals
 from django.test import TestCase
@@ -7,8 +8,6 @@ from mbq.ranch.constants import TaskStatus
 from mbq.ranch.controllers import persist_task, rerun_logged_task
 from mbq.ranch.exceptions import TaskNotFound
 from mbq.ranch.models import LoggedTask
-
-from mock import Mock, patch
 
 
 class TaskManagementTests(TestCase):

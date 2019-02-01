@@ -1,6 +1,6 @@
 """Handlers for enforcing opinionated config. Gross, but necessary."""
+import copy
 import logging
-from copy import copy
 
 from django.conf import settings
 

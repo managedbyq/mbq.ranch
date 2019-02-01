@@ -1,7 +1,7 @@
 import os
 
 import dj_database_url
-from mbq import env
+from mbq import env, metrics
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -57,6 +57,8 @@ MESSAGE_HANDLERS = "tests.message_handlers"
 RANCH = {
     "env": env.Environment.LOCAL,  # e.g. production, development
     "service": "ranch",  # e.g. os-core
+    "broker_url": "amqp://rabbitmq",
+    "running_tests": False,
 }
 LOGGING_LEVEL = "DEBUG"
 LOGGING = {
@@ -88,3 +90,5 @@ LOGGING = {
         "": {"handlers": ["console"], "level": LOGGING_LEVEL},
     },
 }
+
+metrics.init("ranch", env.Environment.LOCAL, {})

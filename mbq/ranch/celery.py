@@ -13,7 +13,7 @@ app = Celery("q")
 # Disable actually sending tasks to Rabbit while we're in tests
 # This should give us a significant speedup without fully
 # disabling the rest of the Celery machinery
-if settings.RANCH.get("RUNNING_TESTS"):
+if settings.RANCH["running_tests"]:
 
     def swallow_task(*args, **kwargs):
         return None
@@ -22,7 +22,7 @@ if settings.RANCH.get("RUNNING_TESTS"):
 
 
 app.conf.update(
-    broker_url=settings.RANCH.get("BROKER_URL"),
+    broker_url=settings.RANCH["broker_url"],
     task_default_exchange="default",
     task_default_queue="default",
     task_default_routing_key="default",
@@ -75,3 +75,5 @@ app.conf.update(
     timezone="America/New_York",
     worker_hijack_root_logger=False,
 )
+
+app.autodiscover_tasks()

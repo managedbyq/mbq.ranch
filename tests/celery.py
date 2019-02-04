@@ -2,9 +2,11 @@ from celery import Celery
 from kombu import Queue
 
 
-app = Celery("ranch_test")
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tests.settings')
+celery_app = Celery("ranch_test")
 
-app.conf.update(
+celery_app.conf.update(
     broker_url="amqp://rabbitmq",
     task_default_exchange="default",
     task_default_queue="default",
@@ -15,4 +17,4 @@ app.conf.update(
     task_queues=(Queue("default"),)
 )
 
-app.autodiscover_tasks()
+celery_app.autodiscover_tasks()

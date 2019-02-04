@@ -10,5 +10,3 @@ from .__version__ import (  # noqa
 
 
 default_app_config = "mbq.ranch.apps.RanchConfig"
-
-

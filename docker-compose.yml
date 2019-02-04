@@ -6,7 +6,7 @@ services:
     build:
       context: .
       args:
-        IMAGE: 'python:3.6-stretch'
+        IMAGE: 'python:3.6-slim-stretch'
     volumes:
       - .:/app
     links:
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       args:
-        IMAGE: 'python:3.7-stretch'
+        IMAGE: 'python:3.7-slim-stretch'
     volumes:
       - .:/app
     links:
@@ -32,7 +32,7 @@ services:
     build:
       context: .
       args:
-        IMAGE: 'python:3.6-stretch'
+        IMAGE: 'python:3.6-slim-stretch'
         INSTALL_DJANGO: 'TRUE'
     volumes:
       - .:/app
@@ -46,7 +46,7 @@ services:
     build:
       context: .
       args:
-        IMAGE: 'python:3.6-stretch'
+        IMAGE: 'python:3.6-slim-stretch'
         INSTALL_DJANGO: 'TRUE'
     volumes:
       - .:/app

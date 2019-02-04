@@ -57,6 +57,9 @@ MESSAGE_HANDLERS = "tests.message_handlers"
 RANCH = {
     "env": env.Environment.LOCAL,  # e.g. production, development
     "service": "ranch",  # e.g. os-core
+    "killswitch": {
+        "open": lambda x, y: False
+    }
 }
 LOGGING_LEVEL = "DEBUG"
 LOGGING = {

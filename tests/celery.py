@@ -2,10 +2,11 @@ import os
 
 from celery import Celery
 from kombu import Queue
-
+from mbq.ranch import KillSwitchTask
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tests.settings")
-celery_app = Celery("ranch_test")
+celery_app = Celery("ranch_test", task_cls=KillSwitchTask)
+# celery_app.Task = KillSwitchTask
 
 celery_app.conf.update(
     broker_url="amqp://rabbitmq",

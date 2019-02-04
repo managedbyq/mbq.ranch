@@ -1,6 +1,7 @@
 import logging
 
 from .celery import celery_app
+from mbq.ranch.celery_task import KillSwitchTask
 
 
 @celery_app.task()

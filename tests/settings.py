@@ -1,7 +1,7 @@
 import os
 
 import dj_database_url
-from mbq import env
+from mbq import env, metrics
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -88,3 +88,5 @@ LOGGING = {
         "": {"handlers": ["console"], "level": LOGGING_LEVEL},
     },
 }
+
+metrics.init("ranch", env.Environment.LOCAL, {})

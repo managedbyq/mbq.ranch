@@ -6,7 +6,7 @@ services:
     build:
       context: .
       args:
-        IMAGE: 'python:3.6-stretch'
+        IMAGE: 'python:3.6-slim-stretch'
     volumes:
       - .:/app
     links:
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       args:
-        IMAGE: 'python:3.7-stretch'
+        IMAGE: 'python:3.7-slim-stretch'
     volumes:
       - .:/app
     links:
@@ -28,11 +28,11 @@ services:
       TOX_WORK_DIR: /tox
       PYTHON_VERSION: py37
 
-  test-admin:
+  admin:
     build:
       context: .
       args:
-        IMAGE: 'python:3.7-slim-stretch'
+        IMAGE: 'python:3.6-slim-stretch'
         INSTALL_DJANGO: 'TRUE'
     volumes:
       - .:/app
@@ -42,7 +42,33 @@ services:
       - '8080:8080'
     command: [python, -m, manage, runserver, '0.0.0.0:8080']
 
+  celery:
+    build:
+      context: .
+      args:
+        IMAGE: 'python:3.6-slim-stretch'
+        INSTALL_DJANGO: 'TRUE'
+    volumes:
+      - .:/app
+    links:
+      - ranch-postgres
+      - rabbitmq
+    command: ["celery", "worker", "--app", "tests.celery", "--concurrency", "1"]
+    networks:
+      - default
+
+  rabbitmq:
+    image: rabbitmq:3.7.8-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   ranch-postgres:
     image: postgres:9.6.8
     environment:
       POSTGRES_DB: ranch
+
+networks:
+  default:
+    external:
+      name: lcl.mbq.io

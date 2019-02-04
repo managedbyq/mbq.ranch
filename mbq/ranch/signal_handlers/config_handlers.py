@@ -1,6 +1,10 @@
 """Handlers for enforcing opinionated config. Gross, but necessary."""
+import copy
+import logging
 
-from celery.signals import celeryd_init
+from django.conf import settings
+
+from celery.signals import celeryd_init, setup_logging
 
 from ..lib.error_handling import log_errors_and_send_to_rollbar
 
@@ -17,3 +21,12 @@ def enforce_app_config(sender, instance, conf, options, **kwargs):
 
     for task in instance.app.tasks.values():
         task.acks_late = True
+
+
+@setup_logging.connect
+@log_errors_and_send_to_rollbar
+def setup_logging(loglevel, logfile, format, colorize, **kwargs):
+    config = copy.copy(settings.LOGGING)
+    config["disable_existing_loggers"] = False
+    logging.config.dictConfig(config)
+    logging.info("logging set up")

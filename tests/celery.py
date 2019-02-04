@@ -2,9 +2,9 @@ from celery import Celery
 from kombu import Queue
 
 
-celery_app = Celery("ranch_test")
+app = Celery("ranch_test")
 
-celery_app.conf.update(
+app.conf.update(
     broker_url="amqp://rabbitmq",
     task_default_exchange="default",
     task_default_queue="default",
@@ -14,3 +14,5 @@ celery_app.conf.update(
     worker_hijack_root_logger=False,
     task_queues=(Queue("default"),)
 )
+
+app.autodiscover_tasks()

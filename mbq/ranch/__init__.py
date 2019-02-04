@@ -11,4 +11,4 @@ from .__version__ import (  # noqa
 
 default_app_config = "mbq.ranch.apps.RanchConfig"
 
-from .celery import app as celery_app
+

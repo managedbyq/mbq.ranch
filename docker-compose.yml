@@ -53,7 +53,7 @@ services:
     links:
       - ranch-postgres
       - rabbitmq
-    command: [python, -m, manage, ranch_celery_worker]
+    command: ["celery", "worker", "--app", "tests.celery", "--concurrency", "1"]
     networks:
       - default
 

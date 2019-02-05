@@ -13,11 +13,8 @@ class KillSwitchTask(celery.Task):
         )
 
     def __call__(self, *args, **kwargs):
-        logging.info(f">>>>> KILLSWITCH NAME: {self.killswitch_name()}")
         variation = settings.RANCH["killswitch"]["variation"]
         if variation(self.killswitch_name(), False):
-            logging.info(">>>> KILLSWITCH ON. SKIPPING")
             return
 
-        logging.info(">>>> KILLSWITCH OFF. RUNNING")
         super().__call__(*args, **kwargs)

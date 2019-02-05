@@ -8,7 +8,6 @@ from .__version__ import (  # noqa
     __version__,
 )
 
+from .celery_task import KillSwitchTask  # noqa
 
 default_app_config = "mbq.ranch.apps.RanchConfig"
-
-from .celery_task import KillSwitchTask

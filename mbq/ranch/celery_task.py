@@ -7,10 +7,6 @@ import logging
 
 class KillSwitchTask(celery.Task):
 
-    def __init__(self, *args, **kwargs):
-        logging.info('>>>>>>> INIT')
-        super().__init__(*args, **kwargs)
-
     def killswitch_name(self):
         logging.info('>>>>>>> KILLSWTICH_NAME')
         logging.info(settings.RANCH)

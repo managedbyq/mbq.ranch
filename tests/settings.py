@@ -16,7 +16,7 @@ DATABASES = {
         DATABASE_URL, engine="django.db.backends.postgresql", conn_max_age=0
     )
 }
-LAUNCHDARKLY_SDK_KEY = 'sdk-44fcaca0-88b0-4966-8b23-d113b5e23332'
+LAUNCHDARKLY_SDK_KEY = "sdk-44fcaca0-88b0-4966-8b23-d113b5e23332"
 SITE_ID = 1
 SECRET_KEY = "BACON"
 USE_I18N = True
@@ -60,9 +60,7 @@ MESSAGE_HANDLERS = "tests.message_handlers"
 RANCH = {
     "env": env.Environment.LOCAL,  # e.g. production, development
     "service": "ranch",  # e.g. os-core
-    "killswitch": {
-        "variation": launch_darkly.variation
-    }
+    "killswitch": {"variation": launch_darkly.variation},
 }
 LOGGING_LEVEL = "DEBUG"
 LOGGING = {

@@ -16,7 +16,7 @@ DATABASES = {
         DATABASE_URL, engine="django.db.backends.postgresql", conn_max_age=0
     )
 }
-LAUNCHDARKLY_SDK_KEY = env.get("LAUNCHDARKLY_SDK_KEY")
+LAUNCHDARKLY_SDK_KEY = env.get("LAUNCHDARKLY_SDK_KEY", required=False)
 SITE_ID = 1
 SECRET_KEY = "BACON"
 USE_I18N = True

@@ -44,5 +44,5 @@ class TaskManagementTests(TestCase):
 
         self.assertEqual(
             test_task.killswitch_name(),
-            "task-killswitch-ranch-tests-tests-test-killswitch-test-task",
+            "task-killswitch-test-service-tests-tests-test-killswitch-test-task",
         )

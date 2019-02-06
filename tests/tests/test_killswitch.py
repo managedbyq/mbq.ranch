@@ -3,13 +3,13 @@ from unittest.mock import Mock
 from django.test import TestCase
 
 from celery import Celery
-from mbq.ranch.killswitch import create_killswitch_task_class
+from mbq.ranch.killswitch import create_task_class
 
 
 class TaskManagementTests(TestCase):
     def test_killswitch_on(self):
         celery_app = Celery(
-            "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: True)
+            "ranch_test", task_cls=create_task_class(lambda x, y: True)
         )
         mock_task_func = Mock()
 
@@ -22,7 +22,7 @@ class TaskManagementTests(TestCase):
 
     def test_killswitch_off(self):
         celery_app = Celery(
-            "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: False)
+            "ranch_test", task_cls=create_task_class(lambda x, y: False)
         )
         mock_task_func = Mock()
 
@@ -35,7 +35,7 @@ class TaskManagementTests(TestCase):
 
     def test_killswitch_name(self):
         celery_app = Celery(
-            "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: False)
+            "ranch_test", task_cls=create_task_class(lambda x, y: False)
         )
 
         @celery_app.task()

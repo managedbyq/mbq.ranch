@@ -9,7 +9,7 @@ import celery
 logger = logging.getLogger(__name__)
 
 
-def create_killswitch_task_class(variation: Callable[[str, bool], bool]) -> celery.Task:
+def create_task_class(variation: Callable[[str, bool], bool]) -> celery.Task:
     class KillSwitchTask(celery.Task):
         def killswitch_name(self):
             service = settings.RANCH["service"]

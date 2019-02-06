@@ -8,6 +8,6 @@ from .__version__ import (  # noqa
     __version__,
 )
 
-from .killswitch import create_killswitch_task_class  # noqa
+from . import killswitch  # noqa
 
 default_app_config = "mbq.ranch.apps.RanchConfig"

@@ -2,14 +2,14 @@ import os
 
 from celery import Celery
 from kombu import Queue
-from mbq.ranch import create_killswitch_task_class
+from mbq import ranch
 
 from . import launch_darkly
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tests.settings")
 celery_app = Celery(
-    "ranch_test", task_cls=create_killswitch_task_class(launch_darkly.variation)
+    "ranch_test", task_cls=ranch.killswitch.create_task_class(launch_darkly.variation)
 )
 
 celery_app.conf.update(

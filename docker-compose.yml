@@ -53,9 +53,11 @@ services:
     links:
       - ranch-postgres
       - rabbitmq
-    command: ["celery", "worker", "--app", "tests.celery", "--concurrency", "1"]
     networks:
       - default
+    env_file:
+      - tests/lcl.env
+    command: ["celery", "worker", "--app", "tests.celery", "--concurrency", "1"]
 
   rabbitmq:
     image: rabbitmq:3.7.8-management-alpine

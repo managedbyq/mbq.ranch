@@ -42,6 +42,7 @@ setuptools.setup(
     install_requires=[
         "arrow",
         "celery<5.0",
+        "ldclient-py>=6,<7",
         "mbq.env>=1,<2",
         "mbq.metrics>=1,<2",
         "rollbar",

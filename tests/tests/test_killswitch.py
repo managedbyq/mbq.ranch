@@ -11,27 +11,27 @@ class TaskManagementTests(TestCase):
         celery_app = Celery(
             "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: True)
         )
-        func_to_be_called = Mock()
+        mock_task_func = Mock()
 
         @celery_app.task()
         def test_task():
-            func_to_be_called()
+            mock_task_func()
 
         test_task()
-        func_to_be_called.assert_not_called()
+        mock_task_func.assert_not_called()
 
     def test_killswitch_off(self):
         celery_app = Celery(
             "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: False)
         )
-        func_to_be_called = Mock()
+        mock_task_func = Mock()
 
         @celery_app.task()
         def test_task():
-            func_to_be_called()
+            mock_task_func()
 
         test_task()
-        func_to_be_called.assert_called_once_with()
+        mock_task_func.assert_called_once_with()
 
     def test_killswitch_name(self):
         celery_app = Celery(

@@ -9,10 +9,7 @@ from mbq.ranch.killswitch import create_killswitch_task_class
 class TaskManagementTests(TestCase):
     def test_killswitch_on(self):
         celery_app = Celery(
-            "ranch_test",
-            task_cls=create_killswitch_task_class(
-                lambda x, y: True, "test_service", "test_env"
-            ),
+            "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: True)
         )
         func_to_be_called = Mock()
 
@@ -25,10 +22,7 @@ class TaskManagementTests(TestCase):
 
     def test_killswitch_off(self):
         celery_app = Celery(
-            "ranch_test",
-            task_cls=create_killswitch_task_class(
-                lambda x, y: False, "test_service", "test_env"
-            ),
+            "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: False)
         )
         func_to_be_called = Mock()
 
@@ -38,3 +32,17 @@ class TaskManagementTests(TestCase):
 
         test_task()
         func_to_be_called.assert_called_once_with()
+
+    def test_killswitch_name(self):
+        celery_app = Celery(
+            "ranch_test", task_cls=create_killswitch_task_class(lambda x, y: False)
+        )
+
+        @celery_app.task()
+        def test_task():
+            pass
+
+        self.assertEqual(
+            test_task.killswitch_name(),
+            "task-killswitch-ranch-tests-tests-test-killswitch-test-task",
+        )

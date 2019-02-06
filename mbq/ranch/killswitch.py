@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 _collector = metrics.Collector(namespace="mbq.ranch")
 
 
-def create_killswitch_task_class(
-    variation: Callable[[str, bool], bool], service: str, env: str
-) -> celery.Task:
+def create_killswitch_task_class(variation: Callable[[str, bool], bool]) -> celery.Task:
     class KillSwitchTask(celery.Task):
         def killswitch_name(self):
             service = settings.RANCH["service"]
@@ -25,11 +23,10 @@ def create_killswitch_task_class(
 
         def __call__(self, *args, **kwargs):
             if variation(self.killswitch_name(), False):
+                from . import _collector
+
                 logger.info(f"Skipping task {self.name} with killswitch feature flag")
-                _collector.increment(
-                    "killswitch",
-                    tags={"task": self.name, "service": service, "env": env},
-                )
+                _collector.increment("killswitch_on", tags={"task": self.name})
                 return
 
             super().__call__(*args, **kwargs)

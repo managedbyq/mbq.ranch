@@ -8,9 +8,7 @@ from mbq.ranch.killswitch import create_task_class
 
 class TaskManagementTests(TestCase):
     def test_killswitch_on(self):
-        celery_app = Celery(
-            "ranch_test", task_cls=create_task_class(lambda x, y: True)
-        )
+        celery_app = Celery("ranch_test", task_cls=create_task_class(lambda x, y: True))
         mock_task_func = Mock()
 
         @celery_app.task()

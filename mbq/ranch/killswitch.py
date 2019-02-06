@@ -4,13 +4,9 @@ from typing import Callable
 from django.conf import settings
 
 import celery
-from mbq import metrics
 
 
 logger = logging.getLogger(__name__)
-
-
-_collector = metrics.Collector(namespace="mbq.ranch")
 
 
 def create_killswitch_task_class(variation: Callable[[str, bool], bool]) -> celery.Task:

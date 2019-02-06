@@ -3,8 +3,6 @@ import os
 import dj_database_url
 from mbq import env, metrics
 
-from . import launch_darkly
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = ["ranch.lcl.mbq.io"]
@@ -60,7 +58,6 @@ MESSAGE_HANDLERS = "tests.message_handlers"
 RANCH = {
     "env": env.Environment.LOCAL,  # e.g. production, development
     "service": "ranch",  # e.g. os-core
-    "killswitch": {"variation": launch_darkly.variation},
 }
 LOGGING_LEVEL = "DEBUG"
 LOGGING = {

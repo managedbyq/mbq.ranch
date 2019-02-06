@@ -17,6 +17,6 @@ def init():
     _user = {"custom": {}, "key": "system", "anonymous": True}
 
 
-def variation(flag_key, default):
+def variation(flag_key: str, default: bool) -> bool:
     init()
     return _ld_client.variation(flag_key, _user, default)

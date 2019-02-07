@@ -3,4 +3,5 @@ from . import (  # noqa
     correlation_handlers,
     metrics_handlers,
     persistence_handlers,
+    rollbar_handlers,
 )

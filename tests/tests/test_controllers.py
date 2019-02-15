@@ -1,4 +1,5 @@
 import json
+import uuid
 from unittest.mock import Mock, patch
 
 from django.db.models import signals
@@ -28,6 +29,7 @@ class TaskManagementTests(TestCase):
             {"foo": 1, "bar": 2},
             "stacktrace",
             TaskStatus.FAILURE,
+            uuid.uuid4(),
         )
 
         logged_task = LoggedTask.objects.filter(
@@ -54,6 +56,7 @@ class TaskManagementTests(TestCase):
             {"fizz": "buzz"},
             "stacktrace",
             TaskStatus.FAILURE,
+            uuid.uuid4(),
         )
         rerun_logged_task(logged_task)
 
@@ -74,6 +77,7 @@ class TaskManagementTests(TestCase):
             {},
             "stacktrace",
             TaskStatus.FAILURE,
+            uuid.uuid4(),
         )
         rerun_logged_task(logged_task)
 
@@ -97,6 +101,7 @@ class TaskManagementTests(TestCase):
             {"fizz": "buzz"},
             "stacktrace",
             TaskStatus.FAILURE,
+            uuid.uuid4(),
         )
 
         with self.assertRaises(TaskNotFound):

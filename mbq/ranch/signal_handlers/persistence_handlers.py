@@ -1,7 +1,6 @@
 import traceback as traceback_stdlib
 
 import rollbar
-
 from celery.signals import task_failure, task_unknown
 
 from ..constants import TaskStatus

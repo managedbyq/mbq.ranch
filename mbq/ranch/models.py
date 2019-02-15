@@ -13,6 +13,7 @@ class LoggedTask(models.Model):
     stacktrace = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    rollbar_occurrence = models.UUIDField(null=True)
 
     def __str__(self):
         return "{} - args: {}, kwargs {}".format(self.task_name, self.args, self.kwargs)

@@ -31,6 +31,7 @@ class LoggedTaskAdmin(admin.ModelAdmin):
         "admin_kwargs",
         "admin_stacktrace",
         "status",
+        "admin_rollbar",
     )
     ordering = ("-created_at",)
 
@@ -73,6 +74,14 @@ class LoggedTaskAdmin(admin.ModelAdmin):
     def admin_kwargs(self, logged_task):
         kwargs = json.loads(logged_task.kwargs)
         return format_html("<br/><pre>{}</pre>", json.dumps(kwargs, indent=4))
+
+    def admin_rollbar(self, logged_task):
+        if not logged_task.rollbar_occurrence:
+            return "No Rollbar occurrence logged"
+        return format_html(
+            "<a href='https://rollbar.com/occurrence/uuid/?uuid={}'>Rollbar occurrence</a>",
+            logged_task.rollbar_occurrence,
+        )
 
     retry_logged_tasks.short_description = "Retry Selected Tasks"
 

@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('ranch', '0002_loggedtask_queue'),
-    ]
+    dependencies = [("ranch", "0002_loggedtask_queue")]
 
     operations = [
         migrations.AddField(
-            model_name='loggedtask',
-            name='rollbar_occurrence',
+            model_name="loggedtask",
+            name="rollbar_occurrence",
             field=models.UUIDField(null=True),
-        ),
+        )
     ]

@@ -1,5 +1,5 @@
 import rollbar
-from celery.signals import task_failure, task_rejected, task_unknown
+from celery.signals import task_rejected
 
 from ..lib.error_handling import log_errors_and_send_to_rollbar
 

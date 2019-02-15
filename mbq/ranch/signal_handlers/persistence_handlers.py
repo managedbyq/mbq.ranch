@@ -1,5 +1,7 @@
 import traceback as traceback_stdlib
 
+import rollbar
+
 from celery.signals import task_failure, task_unknown
 
 from ..constants import TaskStatus
@@ -22,7 +24,7 @@ def handle_task_failure(
             kwargs,
             traceback_stdlib.format_exc(),
             TaskStatus.FAILURE,
-            rollbar_uuid
+            rollbar_uuid,
         )
     except Exception:
         # If anything goes wrong persisting the task to the DB,
@@ -50,5 +52,5 @@ def handle_task_unknown(sender, name, id, message, exc, **kwargs):
         message.payload[1],
         traceback_stdlib.format_exc(),
         TaskStatus.UNKNOWN,
-        rollbar_uuid
+        rollbar_uuid,
     )

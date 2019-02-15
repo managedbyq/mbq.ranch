@@ -5,7 +5,7 @@ from .exceptions import TaskNotFound
 from .models import LoggedTask
 
 
-def persist_task(task_id, queue, task_name, args, kwargs, stacktrace, status):
+def persist_task(task_id, queue, task_name, args, kwargs, stacktrace, status, rollbar_uuid):
     return LoggedTask.objects.create(
         id=task_id,
         queue=queue,
@@ -14,6 +14,7 @@ def persist_task(task_id, queue, task_name, args, kwargs, stacktrace, status):
         kwargs=json.dumps(kwargs),
         stacktrace=stacktrace,
         status=status,
+        rollbar_occurrence=rollbar_uuid,
     )
 
 

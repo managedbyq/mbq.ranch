@@ -1,10 +1,9 @@
 import logging
-import os
-import signal
 
 from django.db.utils import InterfaceError
 
 import rollbar
+from celery.app import control
 
 from .. import _collector
 
@@ -22,7 +21,7 @@ def log_errors_and_send_to_rollbar(func):
             # send SIGTERM here
             logger.exception("Database connection error")
             rollbar.report_exc_info()
-            os.kill(os.getpid(), signal.SIGTERM)
+            control.shutdown()
         except Exception:
             logger.exception("Ranch signal error")
             rollbar.report_exc_info()

@@ -2,7 +2,8 @@ import logging
 import os
 import signal
 
-import psycopg2
+from django.db.utils import InterfaceError
+
 import rollbar
 
 from .. import _collector
@@ -15,7 +16,7 @@ def log_errors_and_send_to_rollbar(func):
     def wrapper(*args, **kwargs):
         try:
             func(*args, **kwargs)
-        except psycopg2.InterfaceError:
+        except InterfaceError:
             # An `InterfaceError` likely indicates the underlying Django database connection has
             # been lost for some reason. Django doesn't try to recconnect or exit gracefully, so
             # send SIGTERM here

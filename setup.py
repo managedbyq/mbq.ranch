@@ -45,6 +45,7 @@ setuptools.setup(
         "ldclient-py>=6,<7",
         "mbq.env>=1,<2",
         "mbq.metrics>=1,<2",
+        "psycopg2-binary",
         "rollbar",
     ],
     zip_safe=True,

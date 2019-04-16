@@ -1,8 +1,6 @@
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 
 
-@python_2_unicode_compatible
 class LoggedTask(models.Model):
     id = models.CharField(max_length=255, primary_key=True, unique=True)
     queue = models.CharField(max_length=128, null=True)

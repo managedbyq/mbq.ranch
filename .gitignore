@@ -2,7 +2,7 @@
 .python-version
 .tox
 .mypy_cache
-**.env
+*.env
 *.egg-info
 *.py[co]
 

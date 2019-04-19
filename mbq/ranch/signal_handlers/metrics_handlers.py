@@ -1,10 +1,12 @@
 import threading
 import time
+import uuid
 from collections import Counter
 
 from django.conf import settings
 
 import arrow
+import billiard.compat
 from celery.signals import (
     after_task_publish,
     before_task_publish,
@@ -68,6 +70,8 @@ def store_metadata_before_task_runs(
     except Exception:
         local.task_queue = None
 
+    local.rss_before_kb = billiard.compat.mem_rss()
+
     queued_at = getattr(task.request, "__RANCH_QUEUED_AT", None)
     if queued_at:
         wait_time_ms = (time.time() - queued_at) * 1000
@@ -88,6 +92,22 @@ def send_metrics_after_task_runs(
         "task.execution_time",
         value=execution_time_ms,
         tags={"task": task.name, "state": state, "queue": local.task_queue},
+    )
+
+    local.tasks_processed += 1
+    _collector.guage(
+        "worker.tasks_processed",
+        value=local.tasks_processed,
+        tags={"queue": local.task_queue, "worker_id": local.worker_id},
+    )
+
+    # mem_rss() is used internally by celery to enforce worker memory
+    # limits so we use the same here to track memory changes.
+    rss_change_kb = billiard.compat.mem_rss() - local.rss_before_kb
+    _collector.increment(
+        "task.rss_change_kb",
+        value=rss_change_kb,
+        tags={"task": task.name, "queue": local.task_queue},
     )
 
 
@@ -142,6 +162,11 @@ def store_metadata_on_worker_start(sender, instance, conf, **kwargs):
     local.broker_type = instance.app.broker_connection().transport_cls
 
     local.last_send_on_heartbeat = 0
+
+    # number of tasks processed over the lifetime of the worker process
+    local.tasks_processed = 0
+
+    local.worker_id = str(uuid.uuid4())
 
 
 def _send_queue_length_metrics():

@@ -34,6 +34,17 @@ EXTRA_ERROR_QUEUE_TAGS_FN = settings.RANCH.get(
 )
 
 
+def _mem_rss_bytes():
+    """
+    `billiard.compat.mem_rss()` returns the memory in kB that the worker
+    is using. Celery uses `mem_rss()` to enforce worker memory limits;
+    Ranch uses the same function to track worker RSS over time and RSS
+    change after each task is run. We convert to bytes (`* 1000`) to
+    make the metrics easier to understand.
+    """
+    return billiard.compat.mem_rss() * 1000
+
+
 @before_task_publish.connect
 @log_errors_and_send_to_rollbar
 def add_metadata_to_task_headers(
@@ -70,7 +81,7 @@ def store_metadata_before_task_runs(
     except Exception:
         local.task_queue = None
 
-    local.rss_before_kb = billiard.compat.mem_rss()
+    local.rss_before_bytes = _mem_rss_bytes()
 
     queued_at = getattr(task.request, "__RANCH_QUEUED_AT", None)
     if queued_at:
@@ -101,12 +112,18 @@ def send_metrics_after_task_runs(
         tags={"queue": local.task_queue, "worker_id": local.worker_id},
     )
 
-    # mem_rss() is used internally by celery to enforce worker memory
-    # limits so we use the same here to track memory changes.
-    rss_change_kb = billiard.compat.mem_rss() - local.rss_before_kb
+    current_rss_bytes = _mem_rss_bytes()
+
+    _collector.gauge(
+        "worker.rss_bytes",
+        value=current_rss_bytes,
+        tags={"queue": local.task_queue, "worker_id": local.worker_id},
+    )
+
+    rss_change_bytes = current_rss_bytes - local.rss_before_bytes
     _collector.increment(
-        "task.rss_change_kb",
-        value=rss_change_kb,
+        "task.rss_change_bytes",
+        value=rss_change_bytes,
         tags={"task": task.name, "queue": local.task_queue},
     )
 

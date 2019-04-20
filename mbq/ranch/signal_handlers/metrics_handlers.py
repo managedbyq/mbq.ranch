@@ -108,7 +108,15 @@ def send_metrics_after_task_runs(
         tags={"queue": local.task_queue, "worker_id": local.worker_id},
     )
 
-    rss_change_bytes = _mem_rss_bytes() - local.rss_before_bytes
+    current_rss_bytes = _mem_rss_bytes()
+
+    _collector.gauge(
+        "worker.rss_bytes",
+        value=current_rss_bytes,
+        tags={"queue": local.task_queue, "worker_id": local.worker_id},
+    )
+
+    rss_change_bytes = current_rss_bytes - local.rss_before_bytes
     _collector.increment(
         "task.rss_change_bytes",
         value=rss_change_bytes,

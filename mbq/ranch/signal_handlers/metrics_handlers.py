@@ -95,7 +95,7 @@ def send_metrics_after_task_runs(
     )
 
     local.tasks_processed += 1
-    _collector.guage(
+    _collector.gauge(
         "worker.tasks_processed",
         value=local.tasks_processed,
         tags={"queue": local.task_queue, "worker_id": local.worker_id},

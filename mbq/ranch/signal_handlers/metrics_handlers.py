@@ -35,9 +35,13 @@ EXTRA_ERROR_QUEUE_TAGS_FN = settings.RANCH.get(
 
 
 def _mem_rss_bytes():
-    # mem_rss() is used internally by celery to enforce worker memory
-    # limits so we use the same here to track memory changes. multiply
-    # by 1000 to make the metrics easier to understand.
+    """
+    `billiard.compat.mem_rss()` returns the memory in kB that the worker
+    is using. Celery uses `mem_rss()` to enforce worker memory limits;
+    Ranch uses the same function to track worker RSS over time and RSS
+    change after each task is run. We convert to bytes (`* 1000`) to
+    make the metrics easier to understand.
+    """
     return billiard.compat.mem_rss() * 1000
 
 

@@ -184,7 +184,7 @@ def store_metadata_on_worker_parent_start(sender, instance, conf, **kwargs):
 
 @worker_process_init.connect
 @log_errors_and_send_to_rollbar
-def store_metadata_on_worker_child_start(sender):
+def store_metadata_on_worker_child_start(sender, **kwargs):
     # number of tasks processed over the lifetime of each worker *child* process
     local.tasks_processed = 0
     local.worker_id = str(uuid.uuid4())

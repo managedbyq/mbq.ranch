@@ -18,6 +18,7 @@ from celery.signals import (
     task_retry,
     task_success,
     task_unknown,
+    worker_process_init,
 )
 
 from .. import _collector
@@ -164,7 +165,7 @@ def send_metrics_on_task_unknown(sender, name, id, message, exc, **kwargs):
 
 @celeryd_after_setup.connect
 @log_errors_and_send_to_rollbar
-def store_metadata_on_worker_start(sender, instance, conf, **kwargs):
+def store_metadata_on_worker_parent_start(sender, instance, conf, **kwargs):
     local.worker_instance = instance
     local.app_config = conf
 
@@ -180,9 +181,12 @@ def store_metadata_on_worker_start(sender, instance, conf, **kwargs):
 
     local.last_send_on_heartbeat = 0
 
-    # number of tasks processed over the lifetime of the worker process
-    local.tasks_processed = 0
 
+@worker_process_init.connect
+@log_errors_and_send_to_rollbar
+def store_metadata_on_worker_child_start(sender):
+    # number of tasks processed over the lifetime of each worker *child* process
+    local.tasks_processed = 0
     local.worker_id = str(uuid.uuid4())
 
 

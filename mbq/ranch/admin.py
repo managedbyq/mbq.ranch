@@ -20,7 +20,7 @@ class LoggedTaskAdmin(admin.ModelAdmin):
         "kwargs",
         "status",
     )
-    list_filter = ("task_name", "status")
+    list_filter = ("task_name", "queue", "status")
 
     fields = readonly_fields = (
         "id",

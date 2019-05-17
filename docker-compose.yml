@@ -56,7 +56,7 @@ services:
     networks:
       - default
     env_file:
-      - tests/lcl.env
+      - .env
     command: ["celery", "worker", "--app", "tests.celery", "--concurrency", "1"]
 
   rabbitmq:

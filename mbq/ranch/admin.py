@@ -35,17 +35,17 @@ class LoggedTaskAdmin(admin.ModelAdmin):
     )
     ordering = ("-created_at",)
 
-    actions = ["delete_selected", "retry_logged_tasks"]
+    actions = ["retry_logged_tasks"]
 
-    def retry_logged_tasks(logged_task_admin, request, queryset):
-        opts = logged_task_admin.model._meta
+    def retry_logged_tasks(self, request, queryset):
+        opts = self.model._meta
 
         if request.method == "POST":
             for logged_task in queryset:
                 rerun_logged_task(logged_task)
             count = queryset.count()
             message = "Retried {} Logged Task items".format(count)
-            logged_task_admin.message_user(request, message, messages.SUCCESS)
+            self.message_user(request, message, messages.SUCCESS)
             # Return None to display the change list page again.
             return None
 
@@ -54,15 +54,17 @@ class LoggedTaskAdmin(admin.ModelAdmin):
             "queryset": queryset,
             "opts": opts,
             "action_checkbox_name": helpers.ACTION_CHECKBOX_NAME,
-            "media": logged_task_admin.media,
+            "media": self.media,
         }
 
         return TemplateResponse(
             request,
             "admin/retry_task_confirmation.html",
             context=context,
-            current_app=logged_task_admin.admin_site.name,
+            current_app=self.admin_site.name,
         )
+
+    retry_logged_tasks.short_description = "Retry Selected Tasks"
 
     def admin_stacktrace(self, logged_task):
         return format_html("<br/><pre>{}</pre>", logged_task.stacktrace)
@@ -83,7 +85,6 @@ class LoggedTaskAdmin(admin.ModelAdmin):
             logged_task.rollbar_occurrence,
         )
 
-    retry_logged_tasks.short_description = "Retry Selected Tasks"
 
 
 admin.site.register(LoggedTask, LoggedTaskAdmin)

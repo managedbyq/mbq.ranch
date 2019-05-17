@@ -86,5 +86,4 @@ class LoggedTaskAdmin(admin.ModelAdmin):
         )
 
 
-
 admin.site.register(LoggedTask, LoggedTaskAdmin)

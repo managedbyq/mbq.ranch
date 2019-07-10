@@ -3,8 +3,8 @@ from django.conf import settings
 import ldclient
 
 
-_ld_client = None
-_user = None
+_ld_client: ldclient.LDClient
+_user: dict
 
 
 def init():

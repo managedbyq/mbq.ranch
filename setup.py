@@ -38,14 +38,15 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries",
     ],
     keywords="",
+    package_data={"mbq.ranch": ["py.typed"]},
     packages=setuptools.find_packages(),
     install_requires=[
         "arrow",
         "celery<5.0",
         "ldclient-py>=6,<7",
-        "mbq.env>=1,<2",
+        "mbq.env>=2,<3",
         "mbq.metrics>=1,<2",
         "rollbar",
     ],
-    zip_safe=True,
+    zip_safe=False,
 )

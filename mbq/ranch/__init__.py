@@ -1,3 +1,5 @@
+from mbq import metrics
+
 from .__version__ import (  # noqa
     __author__,
     __author_email__,
@@ -9,5 +11,7 @@ from .__version__ import (  # noqa
 )
 
 from . import killswitch  # noqa
+
+_collector: metrics.Collector
 
 default_app_config = "mbq.ranch.apps.RanchConfig"

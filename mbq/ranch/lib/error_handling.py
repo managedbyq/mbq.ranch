@@ -1,6 +1,6 @@
 import logging
 
-from django.db.utils import InterfaceError
+from django.db.utils import Error
 
 import rollbar
 from celery.app import control
@@ -15,11 +15,10 @@ def log_errors_and_send_to_rollbar(func):
     def wrapper(*args, **kwargs):
         try:
             func(*args, **kwargs)
-        except InterfaceError:
-            # An `InterfaceError` likely indicates the underlying Django database connection has
-            # been lost for some reason. Django doesn't try to recconnect or exit gracefully, so
-            # send SIGTERM here
-            logger.exception("Database connection error")
+        except Error:
+            # If we receive any database-related exceptions, send SIGTERM--this may not be
+            # necessary in every case, but it is safer
+            logger.exception("Database error")
             rollbar.report_exc_info()
             control.shutdown()
         except Exception:

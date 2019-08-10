@@ -19,7 +19,7 @@ class RanchConfig(AppConfig):
             )
 
         self.module._collector = metrics.Collector(
-            namespace="mbq.ranch", tags={"env": env, "service": service}
+            namespace="mbq.ranch", tags={"env": env, "service": service, "mbq-service-name": service}
         )
 
         from . import signal_handlers  # noqa

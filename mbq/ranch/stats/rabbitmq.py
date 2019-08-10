@@ -27,18 +27,20 @@ def send_rabbitmq_queue_stats(broker_url, queue_names):
         # collecting queue stats frequently. As such, we log but otherwise
         # swallow the exception (so we do not Rollbar or emit generic error
         # metrics)
-        error_type = 'timeout'
+        error_type = "timeout"
     except requests.exceptions.ConnectionError:
-        error_type = 'connection-error'
+        error_type = "connection-error"
     except requests.exceptions.HTTPError:
-        error_type = 'http-error'
+        error_type = "http-error"
     except requests.exceptions.RequestException:
-        error_type = 'request-exception'
+        error_type = "request-exception"
     finally:
         if error_type:
             # backwards compatible. remove "rabbitmq.stats.timeout" after 1 December 2019
             _collector.increment("rabbitmq.stats.timeout")
-            _collector.increment("rabbitmq.stats.error", tags={'error-type': error_type})
+            _collector.increment(
+                "rabbitmq.stats.error", tags={"error-type": error_type}
+            )
             return
 
     response.raise_for_status()

@@ -20,6 +20,7 @@ def log_errors_and_send_to_rollbar(func):
             # necessary in every case, but it is safer
             logger.exception("Database error")
             rollbar.report_exc_info()
+            _collector.increment("signal-force-shutdown")
             controller = control.Control(app=app_or_default())
             controller.shutdown()
         except Exception:

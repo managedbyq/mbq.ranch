@@ -4,12 +4,15 @@ from celery import Celery
 from kombu import Queue
 from mbq import ranch
 
-from . import launch_darkly
+
+def fake_launch_darkly_variation(flag_key: str, default: bool) -> bool:
+    raise RuntimeError("Change me if you need me to do something useful")
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tests.settings")
 celery_app = Celery(
-    "ranch_test", task_cls=ranch.killswitch.create_task_class(launch_darkly.variation)
+    "ranch_test",
+    task_cls=ranch.killswitch.create_task_class(fake_launch_darkly_variation),
 )
 
 celery_app.conf.update(
